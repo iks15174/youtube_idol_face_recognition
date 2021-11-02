@@ -71,8 +71,8 @@ while True:
     # Only process every other frame of video to save time
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
-        face_locations = face_recognition.face_locations(rgb_small_frame, model='cnn')
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations, model='large')
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations, num_jitters=5, model='large')
 
         for (top, right, bottom, left) in face_locations:
             drawBox(top, right, bottom, left, frame)
