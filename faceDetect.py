@@ -4,17 +4,19 @@ import pafy
 
 
 cascPath = "face_detect.xml"
-faceCascade = cv2.CascadeClassifier(cascPath)
+faceCascade = cv2.CascadeClassifier(
+    cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+)
 img_path = "img/face_detect_ex1.webp"
 
-videoUrl = input("youtube url : ")
-video = pafy.new(videoUrl)
-bestRes = video.getbest(preftype="mp4")
-vidcap = cv2.VideoCapture(bestRes.url)
+# videoUrl = input("youtube url : ")
+# video = pafy.new(videoUrl)
+# bestRes = video.getbest(preftype="mp4")
+# vidcap = cv2.VideoCapture(bestRes.url)
 
 
 def face_detection(frame):
-    iteration_count = 10
+    iteration_count = 100
     for cnt in range(0, iteration_count):
 
         # Read the image
@@ -30,7 +32,7 @@ def face_detection(frame):
 
         # 검출된 얼굴 주변에 사각형 그리기
         for (x, y, w, h) in faces:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
 
 # while True:
@@ -46,3 +48,4 @@ def face_detection(frame):
 img = cv2.imread(img_path)
 face_detection(img)
 cv2.imshow("Face detected", img)
+cv2.waitKey(0)
