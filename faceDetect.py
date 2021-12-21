@@ -3,26 +3,48 @@ import pafy
 import numpy as np
 
 
+FACE_DETECT_SAVE_FOLDER = "faceDetection/"
+IMG_COUNT = 0
 FACE_OCCUR_TRHESHOLD = 20
 faceCascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 )
 
 
+def save_face_image(frame, location):
+    global IMG_COUNT
+    (x, y, w, h) = location
+    face = frame[y : y + h, x : x + w]  # slice the face from the image
+    cv2.imwrite(
+        FACE_DETECT_SAVE_FOLDER + str(IMG_COUNT) + ".jpg", face
+    )  # save the image
+    IMG_COUNT += 1
+
+
 def face_detection(frame):
     # Read the image
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Detect faces in the image
     faces = faceCascade.detectMultiScale(
-        gray,
+        frame,
         scaleFactor=1.05,  # 이미지에서 얼굴 크기가 서로 다른 것을 보상해주는 값
         minNeighbors=5,  # 얼굴 사이의 최소 간격(픽셀)입니다
         minSize=(10, 10),  # 얼굴의 최소 크기입니다
     )
     # 검출된 얼굴 주변에 사각형 그리기
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    # for (x, y, w, h) in faces:
+    #     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
+    # face recognition 적용을 위한 변환
+    for face in faces:
+        top = face[1]
+        left = face[0]
+        right = face[0] + face[2]
+        bottom = face[1] + face[3]
+        face[0] = top
+        face[1] = right
+        face[2] = bottom
+        face[3] = left
     return faces
 
 
@@ -89,6 +111,7 @@ def youtube_test():
 
         for index, saved_loc in enumerate(saved_locs):
             if saved_loc["count"] >= FACE_OCCUR_TRHESHOLD:
+                save_face_image(frame, saved_loc["location"])
                 print(saved_loc)
                 del saved_locs[index]
                 print(f"Face detected in postion")
@@ -97,4 +120,4 @@ def youtube_test():
         key = cv2.waitKey(25)
 
 
-youtube_test()
+# youtube_test()
