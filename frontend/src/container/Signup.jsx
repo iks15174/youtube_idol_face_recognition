@@ -1,40 +1,68 @@
 import React, { useState } from "react";
 
 const Signup = (props) => {
+    const [nickName, setNickName] = useState("");
+    const [email, setEmail] = useState("hi");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [passwordError, setpasswordError] = useState("");
-    const [emailError, setemailError] = useState("");
+    const [rePassword, setRePassword] = useState("");
+    const [formValid, setFormValid] = useState(false);
 
-    const handleValidation = (event) => {
-        let formIsValid = true;
+
+    const [nickNameError, setNickNameError] = useState("");
+    const [emailError, setemailError] = useState("");
+    const [passwordError, setpasswordError] = useState("");
+    const [rePasswordError, setRePasswordError] = useState("");
+
+
+    const handleValidation = () => {
+        if (!nickName.match(/^[0-9A-Za-z가-힣]{2,22}$/)) {
+            setFormValid(false);
+            setNickNameError(
+                "2자리 이상 22자리 이햐의 숫자&문자로 이루어져야 합니다."
+            );
+            return
+        } else {
+            setNickNameError("");
+        }
 
         if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-            formIsValid = false;
-            setemailError("Email Not Valid");
-            return false;
+            setFormValid(false);
+            setemailError("올바르지 않은 이메일 형식 입니다.");
+            return
         } else {
             setemailError("");
-            formIsValid = true;
         }
 
-        if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-            formIsValid = false;
+        if (!password.match(/^[0-9]{4,22}$/)) {
+            setFormValid(false);
             setpasswordError(
-                "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
+                "4자리 이상 22자리 이햐의 숫자로 이루어져야 합니다."
             );
-            return false;
+            return
         } else {
             setpasswordError("");
-            formIsValid = true;
         }
-
-        return formIsValid;
+        setFormValid(true);
     };
+
+    const handleRePwd = () => {
+        if (password != rePassword) {
+            setFormValid(false);
+            setRePasswordError("비밀번호가 일치하지 않습니다.");
+        }
+        else {
+            setRePasswordError("")
+            setFormValid(true);
+        }
+    }
 
     const loginSubmit = (e) => {
         e.preventDefault();
         handleValidation();
+        handleRePwd();
+        if (formValid) {
+
+        }
     };
 
     return (
@@ -43,17 +71,32 @@ const Signup = (props) => {
                 <div className="col-md-4">
                     <form id="loginform" onSubmit={loginSubmit}>
                         <div className="form-group">
-                            <label>Email address</label>
+                            <label>Nick name</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="nickName"
+                                name="nickName"
+                                aria-describedby="nameHelp"
+                                placeholder="Nick Name"
+                                onChange={(event) => setNickName(event.target.value)}
+                            />
+                            <small id="nickNameError" className="text-danger form-text">
+                                {nickNameError}
+                            </small>
+                        </div>
+                        <div className="form-group">
+                            <label>Email</label>
                             <input
                                 type="email"
                                 className="form-control"
-                                id="EmailInput"
-                                name="EmailInput"
+                                id="email"
+                                name="email"
                                 aria-describedby="emailHelp"
-                                placeholder="Enter email"
+                                placeholder="Email"
                                 onChange={(event) => setEmail(event.target.value)}
                             />
-                            <small id="emailHelp" className="text-danger form-text">
+                            <small id="emailError" className="text-danger form-text">
                                 {emailError}
                             </small>
                         </div>
@@ -62,7 +105,7 @@ const Signup = (props) => {
                             <input
                                 type="password"
                                 className="form-control"
-                                id="exampleInputPassword1"
+                                id="password"
                                 placeholder="Password"
                                 onChange={(event) => setPassword(event.target.value)}
                             />
@@ -70,15 +113,20 @@ const Signup = (props) => {
                                 {passwordError}
                             </small>
                         </div>
-                        <div className="form-group form-check">
+                        <div className="form-group">
+                            <label>Re-password</label>
                             <input
-                                type="checkbox"
-                                className="form-check-input"
-                                id="exampleCheck1"
+                                type="password"
+                                className="form-control"
+                                id="rePassword"
+                                placeholder="Re-Password"
+                                onChange={(event) => setRePassword(event.target.value)}
                             />
-                            <label className="form-check-label">Check me out</label>
+                            <small id="rePassworderror" className="text-danger form-text">
+                                {rePasswordError}
+                            </small>
                         </div>
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn btn-primary mt-1">
                             Submit
                         </button>
                     </form>
