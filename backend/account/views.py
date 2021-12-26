@@ -4,11 +4,17 @@ from django.contrib.auth.models import User
 from django.http.response import HttpResponseBadRequest
 from django.contrib.auth import authenticate, get_user_model, login
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 import json
 
 
 UserModel = get_user_model()
+
+
+@ensure_csrf_cookie
+@require_http_methods(["GET"])
+def token(request):
+    return HttpResponse(status=204)
 
 
 @require_http_methods(["POST"])
@@ -18,7 +24,7 @@ def signup(request):
         req_data = json.loads(request.body.decode())
         email = req_data["email"]
         password = req_data["password"]
-        nick_name = req_data["nick_name"]
+        nick_name = req_data["nickName"]
     except (KeyError, JSONDecodeError):
         return HttpResponseBadRequest()
 

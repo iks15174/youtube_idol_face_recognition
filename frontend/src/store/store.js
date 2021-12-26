@@ -2,13 +2,13 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-import auth from '../reducer/auth'
+import authReducer from '../reducer/auth'
 
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
     router: connectRouter(history),
-    auth: auth
+    auth: authReducer
 });
 export const middlewares = [thunk, routerMiddleware(history)]
 

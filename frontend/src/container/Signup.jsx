@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux'
+import { signup } from "../action/auth";
 
 const Signup = (props) => {
+    const dispatch = useDispatch();
+
     const [nickName, setNickName] = useState("");
     const [email, setEmail] = useState("hi");
     const [password, setPassword] = useState("");
@@ -46,7 +50,7 @@ const Signup = (props) => {
     };
 
     const handleRePwd = () => {
-        if (password != rePassword) {
+        if (password !== rePassword) {
             setFormValid(false);
             setRePasswordError("비밀번호가 일치하지 않습니다.");
         }
@@ -56,12 +60,12 @@ const Signup = (props) => {
         }
     }
 
-    const loginSubmit = (e) => {
+    const signupSubmit = (e) => {
         e.preventDefault();
         handleValidation();
         handleRePwd();
         if (formValid) {
-
+            dispatch(signup(email, nickName, password))
         }
     };
 
@@ -69,7 +73,7 @@ const Signup = (props) => {
         <div className="container">
             <div className="row d-flex justify-content-center">
                 <div className="col-md-4">
-                    <form id="loginform" onSubmit={loginSubmit}>
+                    <form id="loginform" onSubmit={signupSubmit}>
                         <div className="form-group">
                             <label>Nick name</label>
                             <input
