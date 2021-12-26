@@ -2,3 +2,4 @@ venv/
 img/
 faceDetection/
 .vscode/
+backend/local_settings.py
