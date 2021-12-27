@@ -12,25 +12,19 @@ import {
 export const handleError = (errorCode, dispatch) => {
     switch (errorCode) {
         case 400:
-            dispatch({ type: ERROR_400 })
-            break;
+            return { type: ERROR_400 }
         case 401:
-            dispatch({ type: ERROR_401 })
-            break;
+            return { type: ERROR_401 }
         case 403:
-            dispatch({ type: ERROR_403 })
-            break;
+            return { type: ERROR_403 }
         case 404:
-            dispatch({ type: ERROR_404 })
-            break;
+            return { type: ERROR_404 }
         case 405:
-            dispatch({ type: ERROR_405 })
-            break;
+            return { type: ERROR_405 }
         case 500:
-            dispatch({ type: ERROR_500 })
-            break;
+            return { type: ERROR_500 }
         default:
-            dispatch({ type: ERROR_OTHER })
+            return { type: ERROR_OTHER }
 
     }
 }
