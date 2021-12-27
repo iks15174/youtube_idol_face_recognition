@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import {
     ERROR_400,
     ERROR_401,

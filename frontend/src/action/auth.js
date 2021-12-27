@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { handleError } from './error';
 import {
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
@@ -21,6 +21,9 @@ export const signin = () => async (dispatch, getState) => {
 
 export const signup = (email, nickName, password) => async (dispatch, getState) => {
     try {
+        const error = new Error("message");
+        error.response = { status: 400 }
+        throw error;
         const res = await axios.post('account/signup/', {
             email,
             nickName,
@@ -33,6 +36,7 @@ export const signup = (email, nickName, password) => async (dispatch, getState) 
         }
     } catch (err) {
         console.log(err.response.status)
+        handleError(err.response.status, dispatch)
     }
 }
 
