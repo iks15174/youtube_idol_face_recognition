@@ -1,23 +1,22 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
+import { cleanError } from "../../action/error";
 
 const ErrorModal = (props) => {
-    const isInitialMount = useRef(true);
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const error = useSelector(state => state.error.errorType)
 
     useEffect(() => {
-        if (isInitialMount.current) {
-            isInitialMount.current = false
-        }
-        else {
-            setShow(true);
+        if (error) {
+            setShow(true)
+            dispatch(cleanError())
         }
     }, [error])
 
 
-    const handleClose = () => setShow(false); //error code 초기화 로직 추가해 줄 것
+    const handleClose = () => setShow(false); //error code 초기화 로직 추가해
     return (
         <>
             <Modal show={show} onHide={handleClose}>

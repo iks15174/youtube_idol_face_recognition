@@ -1,4 +1,5 @@
 import {
+    CLEAN_ERROR,
     ERROR_400,
     ERROR_401,
     ERROR_403,
@@ -32,4 +33,8 @@ export const handleError = (errorCode, dispatch) => {
             dispatch({ type: ERROR_OTHER })
 
     }
+}
+
+export const cleanError = () => {
+    return { type: CLEAN_ERROR }
 }

@@ -35,7 +35,6 @@ export const signup = (email, nickName, password) => async (dispatch, getState) 
             })
         }
     } catch (err) {
-        console.log(err.response.status)
         handleError(err.response.status, dispatch)
     }
 }

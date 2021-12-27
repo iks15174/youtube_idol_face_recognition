@@ -62,9 +62,9 @@ const Signup = (props) => {
 
     const signupSubmit = (e) => {
         e.preventDefault();
-        handleValidation();
-        handleRePwd();
-        if (formValid) {
+        // handleValidation();
+        // handleRePwd();
+        if (true) {
             dispatch(signup(email, nickName, password))
         }
     };

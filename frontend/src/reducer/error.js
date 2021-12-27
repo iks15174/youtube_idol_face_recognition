@@ -5,7 +5,8 @@ import {
     ERROR_404,
     ERROR_405,
     ERROR_500,
-    ERROR_OTHER
+    ERROR_OTHER,
+    CLEAN_ERROR
 } from '../action/errorTypes';
 
 const initialState = {
@@ -20,6 +21,12 @@ export default function errorReducer(state = initialState, action) {
         return {
             ...state,
             errorType: action.type
+        }
+    }
+    else if (action.type === CLEAN_ERROR) {
+        return {
+            ...state,
+            errorType: ""
         }
     }
     else {
