@@ -2,9 +2,21 @@ import axios from 'axios';
 import { handleError } from './error';
 import {
     LOGIN_SUCCESS,
-    LOGOUT_SUCCESS,
     SIGNUP_SUCCESS,
 } from './authTypes';
+
+export const isLogin = () => async (dispatch, getState) => {
+    try {
+        const res = await axios.get('account/islogin/')
+        if (res.status === 204) {
+            dispatch({
+                type: LOGIN_SUCCESS,
+            })
+        }
+    } catch (err) {
+        if (err.response.status !== 401) dispatch(handleError(err.response.status))
+    }
+}
 
 export const signin = () => async (dispatch, getState) => {
     try {
@@ -15,7 +27,7 @@ export const signin = () => async (dispatch, getState) => {
             })
         }
     } catch (err) {
-        console.log(err.response.status)
+        dispatch(handleError(err.response.status))
     }
 }
 
@@ -39,8 +51,8 @@ export const signup = (email, nickName, password) => async (dispatch, getState) 
 
 export const token = () => async (dispatch, getState) => {
     try {
-        const res = await axios.get('account/token/')
+        await axios.get('account/token/')
     } catch (err) {
-        console.log(err)
+        dispatch(handleError(err.response.status))
     }
 }

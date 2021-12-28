@@ -43,3 +43,11 @@ def signin(request):
         login(request, user)
         return HttpResponse(status=204)
     return HttpResponse(status=401)
+
+
+@require_http_methods(["GET"])
+@ensure_csrf_cookie
+def islogin(request):
+    if request.user.is_authenticated:
+        return HttpResponse(status=204)
+    return HttpResponse(status=401)

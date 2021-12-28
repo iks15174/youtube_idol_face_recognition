@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 
-import { token } from './action/auth';
+import { token, isLogin } from './action/auth';
 
 
 import Signup from './container/Signup'
@@ -16,6 +16,7 @@ function App(props) {
 
   useEffect(() => {
     dispatch(token())
+    dispatch(isLogin())
   });
 
   return (
