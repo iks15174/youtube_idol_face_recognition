@@ -8,10 +8,10 @@ function Header() {
                         <a className="nav-link" aria-current="page" href="#">Home</a>
                     </li>
                     <li className="nav-item px-1">
-                        <a className="nav-link" href="#">Link</a>
+                        <a className="nav-link" href="#">SignIn</a>
                     </li>
                     <li className="nav-item px-1">
-                        <a className="nav-link disabled">Disabled</a>
+                        <a className="nav-link">SingUp</a>
                     </li>
                 </ul>
             </div>

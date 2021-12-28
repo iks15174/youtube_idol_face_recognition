@@ -11,25 +11,24 @@ const ErrorModal = (props) => {
     useEffect(() => {
         if (error) {
             setShow(true)
-            dispatch(cleanError())
         }
     }, [error])
 
 
-    const handleClose = () => setShow(false); //error code 초기화 로직 추가해
+    const handleClose = () => {
+        setShow(false)
+        dispatch(cleanError())
+    };
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Error</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Body>{error}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
                     </Button>
                 </Modal.Footer>
             </Modal>

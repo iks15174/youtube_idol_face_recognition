@@ -9,7 +9,7 @@ import {
     ERROR_OTHER
 } from './errorTypes';
 
-export const handleError = (errorCode, dispatch) => {
+export const handleError = (errorCode) => {
     switch (errorCode) {
         case 400:
             return { type: ERROR_400 }
