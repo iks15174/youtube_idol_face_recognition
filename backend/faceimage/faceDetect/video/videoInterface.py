@@ -7,5 +7,5 @@ class VideoInterface(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def parse(self):
+    def parse(self, path):
         pass
