@@ -1,7 +1,4 @@
-from backend.faceimage.faceDetect.video.videoInterface import VideoInterface
-
-
-class FileVideo(VideoInterface):
+class FileVideo:
     def get_video_src(self):
         pass
 

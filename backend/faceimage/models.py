@@ -13,7 +13,7 @@ class FaceDetectJob(models.Model):
     )
     finished = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    finished_at = models.DateTimeField()
+    finished_at = models.DateTimeField(null=True)
 
     # finished되면 끝난 시간을 함께 저장해준다.
     def save(self, *args, **kwargs):

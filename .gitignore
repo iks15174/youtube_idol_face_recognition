@@ -3,3 +3,4 @@ img/
 faceDetection/
 .vscode/
 backend/local_settings.py
+backend/videos/*

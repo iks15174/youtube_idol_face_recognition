@@ -15,10 +15,11 @@ class FaceDetect:
     def init(cls, video_src):
         cls.count = 0
         cls.video_src = video_src
+        return cls
 
     @classmethod
     def save_face_image(self, frame, location):
-        pass
+        print("sace_face_image called")
         # global IMG_COUNT
         # (x, y, w, h) = location
         # face = frame[y : y + h, x : x + w]  # slice the face from the image
@@ -92,11 +93,14 @@ class FaceDetect:
 
     @classmethod
     def run(cls):
+        print("Face detection started")
+        print(cls.video_src)
         saved_locs = []
         prev_face_locations = []
         while True:
             frameExist, frame = cls.video_src.read()
             if not frameExist:
+                print("Frame doesn't exist")
                 break
 
             cur_face_locations = cls.face_detection(frame)
@@ -109,4 +113,6 @@ class FaceDetect:
                 if saved_loc["count"] >= cls.face_occur_threshold:
                     cls.save_face_image(frame, saved_loc["location"])
                     del saved_locs[index]
-            print(f"Face occured over {cls.face_occur_threshold} saved in Model")
+                    print(
+                        f"Face occured over {cls.face_occur_threshold} saved in Model"
+                    )

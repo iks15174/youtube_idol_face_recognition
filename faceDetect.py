@@ -93,10 +93,11 @@ def img_test():
 
 
 def youtube_test():
-    videoUrl = input("youtube url : ")
-    video = pafy.new(videoUrl)
-    bestRes = video.getbest(preftype="mp4")
-    vidcap = cv2.VideoCapture(bestRes.url)
+    # videoUrl = input("youtube url : ")
+    # video = pafy.new(videoUrl)
+    # bestRes = video.getbest(preftype="mp4")
+    # vidcap = cv2.VideoCapture(bestRes.url)
+    vidcap = cv2.VideoCapture("t2.mp4")
 
     saved_locs = []
     prev_face_locations = []
@@ -120,4 +121,4 @@ def youtube_test():
         key = cv2.waitKey(25)
 
 
-# youtube_test()
+youtube_test()
