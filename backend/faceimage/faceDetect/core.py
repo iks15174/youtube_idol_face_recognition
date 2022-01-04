@@ -1,6 +1,7 @@
 import cv2
 import pafy
 import numpy as np
+from faceimage.models import Image
 
 
 class FaceDetect:
@@ -55,7 +56,7 @@ class FaceDetect:
             face[3] = left
         return faces
 
-    @classmethod
+    @staticmethod
     def find_similiar_location(prev_locs, cur_locs, saved_locs, error=10):
         if len(cur_locs) == 0:
             return
@@ -94,7 +95,6 @@ class FaceDetect:
     @classmethod
     def run(cls):
         print("Face detection started")
-        print(cls.video_src)
         saved_locs = []
         prev_face_locations = []
         while True:

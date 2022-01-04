@@ -27,7 +27,9 @@ def get_face(request):
             youtube_src = youtube_video.download(link).get_video_cap()
             print(f"youtube src is {youtube_src}")
             FaceDetect.init(youtube_src).run()
-            # youtube_video.delete()
+            face_detect_job.finished = True
+            face_detect_job.save()
+            youtube_video.delete()
             return HttpResponseBadRequest()
         elif src_type == FILE_TYPE:
             file = request.FILES
@@ -37,3 +39,5 @@ def get_face(request):
     except (KeyError, JSONDecodeError):
         face_detect_job.delete()
         return HttpResponseBadRequest()
+    finally:
+        youtube_video.delete()

@@ -1,10 +1,10 @@
 from json.decoder import JSONDecodeError
-from django.http import HttpResponse, JsonResponse
-from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.http.response import HttpResponseBadRequest
 from django.contrib.auth import authenticate, get_user_model, login
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie
+from faceimage.models import ImageGroup
 import json
 
 
@@ -28,7 +28,10 @@ def signup(request):
     except (KeyError, JSONDecodeError):
         return HttpResponseBadRequest()
 
-    UserModel.objects.create_user(email=email, password=password, nickname=nick_name)
+    user = UserModel.objects.create_user(
+        email=email, password=password, nickname=nick_name
+    )
+    ImageGroup.objects.create(user=user, name=user.nickname)
     return HttpResponse(status=201)
 
 

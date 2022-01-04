@@ -1,4 +1,4 @@
-class FileVideo:
+class FileToVideo:
     def get_video_src(self):
         pass
 
