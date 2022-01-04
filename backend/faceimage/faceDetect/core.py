@@ -1,7 +1,10 @@
 import cv2
 import pafy
 import numpy as np
-from faceimage.models import Image
+from faceimage.models import Image as ImageModel, ImageGroup
+from io import BytesIO
+from django.core.files.base import ContentFile
+from PIL import Image
 
 
 class FaceDetect:
@@ -14,12 +17,24 @@ class FaceDetect:
         self.face_occur_threshold = 20
         self.video_src = video_src
         self.user = user
+        self.default_group = ImageGroup.objects.get(name=self.user.nickname)
+        self.img_list = []
 
     def save_face_image(self, frame, location):
         print("sace_face_image called")
         # global IMG_COUNT
-        # (x, y, w, h) = location
-        # face = frame[y : y + h, x : x + w]  # slice the face from the image
+        (x, y, w, h) = location
+        face = frame[y : y + h, x : x + w]  # slice the face from the image
+        img = Image.fromarray(face, "RGB")
+        try:
+            blob = BytesIO()
+            img.save(blob, "JPEG")
+            img_model = ImageModel(user=self.user, image_group=self.default_group)
+            img_model.image.save(f"{self.count}.jpg", "")
+            img_model.save()
+            self.count += 1
+        finally:
+            blob.close()
         # cv2.imwrite(
         #     FACE_DETECT_SAVE_FOLDER + str(IMG_COUNT) + ".jpg", face
         # )  # save the image
@@ -89,28 +104,29 @@ class FaceDetect:
             saved_loc["new"] = False
 
     def run(self):
-        print("Face detection started")
-        saved_locs = []
-        prev_face_locations = []
-        while True:
-            frameExist, frame = self.video_src.read()
-            if not frameExist:
-                print("Frame doesn't exist")
-                break
+        try:
+            print("Face detection started")
+            saved_locs = []
+            prev_face_locations = []
+            while True:
+                frameExist, frame = self.video_src.read()
+                if not frameExist:
+                    print("Frame doesn't exist")
+                    break
 
-            cur_face_locations = FaceDetect.face_detection(frame)
-            FaceDetect.find_similiar_location(
-                prev_face_locations, cur_face_locations, saved_locs, 10
-            )
-            prev_face_locations = cur_face_locations
+                cur_face_locations = FaceDetect.face_detection(frame)
+                FaceDetect.find_similiar_location(
+                    prev_face_locations, cur_face_locations, saved_locs, 10
+                )
+                prev_face_locations = cur_face_locations
 
-            for index, saved_loc in enumerate(saved_locs):
-                if saved_loc["count"] >= self.face_occur_threshold:
-                    self.save_face_image(frame, saved_loc["location"])
-                    del saved_locs[index]
-                    print(
-                        f"Face occured over {self.face_occur_threshold} saved in Model"
-                    )
-
-        self.video_src.release()
-        cv2.destroyAllWindows()
+                for index, saved_loc in enumerate(saved_locs):
+                    if saved_loc["count"] >= self.face_occur_threshold:
+                        self.save_face_image(frame, saved_loc["location"])
+                        del saved_locs[index]
+                        print(
+                            f"Face occured over {self.face_occur_threshold} saved in Model"
+                        )
+        finally:
+            self.video_src.release()
+            cv2.destroyAllWindows()
