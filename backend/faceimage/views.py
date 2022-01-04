@@ -26,11 +26,10 @@ def get_face(request):
             youtube_video = YoutubeToVideo()
             youtube_src = youtube_video.download(link).get_video_cap()
             print(f"youtube src is {youtube_src}")
-            FaceDetect.init(youtube_src).run()
+            FaceDetect(youtube_src, request.user).run()
             face_detect_job.finished = True
             face_detect_job.save()
-            youtube_video.delete()
-            return HttpResponseBadRequest()
+            return HttpResponse(status=201)
         elif src_type == FILE_TYPE:
             file = request.FILES
         else:

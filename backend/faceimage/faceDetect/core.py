@@ -5,20 +5,16 @@ from faceimage.models import Image
 
 
 class FaceDetect:
-    count = 0
-    face_occur_threshold = 20
-    video_src = None
     face_cascade = cv2.CascadeClassifier(
         cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
     )
 
-    @classmethod
-    def init(cls, video_src):
-        cls.count = 0
-        cls.video_src = video_src
-        return cls
+    def __init__(self, video_src, user):
+        self.count = 0
+        self.face_occur_threshold = 20
+        self.video_src = video_src
+        self.user = user
 
-    @classmethod
     def save_face_image(self, frame, location):
         print("sace_face_image called")
         # global IMG_COUNT
@@ -92,27 +88,29 @@ class FaceDetect:
         for saved_loc in saved_locs:
             saved_loc["new"] = False
 
-    @classmethod
-    def run(cls):
+    def run(self):
         print("Face detection started")
         saved_locs = []
         prev_face_locations = []
         while True:
-            frameExist, frame = cls.video_src.read()
+            frameExist, frame = self.video_src.read()
             if not frameExist:
                 print("Frame doesn't exist")
                 break
 
-            cur_face_locations = cls.face_detection(frame)
-            cls.find_similiar_location(
+            cur_face_locations = FaceDetect.face_detection(frame)
+            FaceDetect.find_similiar_location(
                 prev_face_locations, cur_face_locations, saved_locs, 10
             )
             prev_face_locations = cur_face_locations
 
             for index, saved_loc in enumerate(saved_locs):
-                if saved_loc["count"] >= cls.face_occur_threshold:
-                    cls.save_face_image(frame, saved_loc["location"])
+                if saved_loc["count"] >= self.face_occur_threshold:
+                    self.save_face_image(frame, saved_loc["location"])
                     del saved_locs[index]
                     print(
-                        f"Face occured over {cls.face_occur_threshold} saved in Model"
+                        f"Face occured over {self.face_occur_threshold} saved in Model"
                     )
+
+        self.video_src.release()
+        cv2.destroyAllWindows()
