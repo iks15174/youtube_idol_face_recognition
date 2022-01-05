@@ -1,5 +1,4 @@
 import cv2
-import pafy
 import numpy as np
 from faceimage.models import Image as ImageModel, ImageGroup
 from io import BytesIO
@@ -21,16 +20,18 @@ class FaceDetect:
         self.img_list = []
 
     def save_face_image(self, frame, location):
-        print("sace_face_image called")
+        print("save_face_image called")
         # global IMG_COUNT
         (x, y, w, h) = location
         face = frame[y : y + h, x : x + w]  # slice the face from the image
         img = Image.fromarray(face, "RGB")
         try:
             blob = BytesIO()
-            img.save(blob, "JPEG")
+            img.save(fp=blob, format="JPEG")
             img_model = ImageModel(user=self.user, image_group=self.default_group)
-            img_model.image.save(f"{self.count}.jpg", "")
+            img_model.image.save(
+                f"{self.count}.jpg", content=ContentFile(blob.getvalue(), save=False)
+            )
             img_model.save()
             self.count += 1
         finally:
