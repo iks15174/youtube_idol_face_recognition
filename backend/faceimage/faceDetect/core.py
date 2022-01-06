@@ -30,7 +30,7 @@ class FaceDetect:
             img.save(fp=blob, format="JPEG")
             img_model = ImageModel(user=self.user, image_group=self.default_group)
             img_model.image.save(
-                f"{self.count}.jpg", content=ContentFile(blob.getvalue(), save=False)
+                f"{self.count}.jpg", content=ContentFile(blob.getvalue())
             )
             img_model.save()
             self.count += 1
