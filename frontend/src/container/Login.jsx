@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom';
+import { signin } from "../action/auth";
 
-const Login = (props) => {
+const Login = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
     const [email, setEmail] = useState("hi");
     const [password, setPassword] = useState("");
     const [formValid, setFormValid] = useState(false);
@@ -31,11 +36,17 @@ const Login = (props) => {
         setFormValid(true);
     };
 
-    const loginSubmit = (e) => {
+    const loginSubmit = async (e) => {
         e.preventDefault();
         handleValidation();
         if (formValid) {
+            try {
+                await dispatch(signin(email, password))
+                history.push("/")
+            }
+            catch {
 
+            }
         }
     };
 

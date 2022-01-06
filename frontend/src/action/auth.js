@@ -18,9 +18,12 @@ export const isLogin = () => async (dispatch, getState) => {
     }
 }
 
-export const signin = () => async (dispatch, getState) => {
+export const signin = (email, password) => async (dispatch) => {
     try {
-        const res = await axios.post('account/signin/')
+        const res = await axios.post('account/signin/', {
+            email,
+            password
+        })
         if (res.status === 204) {
             dispatch({
                 type: LOGIN_SUCCESS,
@@ -31,7 +34,7 @@ export const signin = () => async (dispatch, getState) => {
     }
 }
 
-export const signup = (email, nickName, password) => async (dispatch, getState) => {
+export const signup = (email, nickName, password) => async (dispatch) => {
     try {
         const res = await axios.post('account/signup/', {
             email,
