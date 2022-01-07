@@ -8,6 +8,7 @@ import { token, isLogin } from './action/auth';
 
 import Signup from './container/Signup'
 import Login from './container/Login'
+import Main from './container/Main'
 import Header from './components/common/Header'
 import ErrorModal from './components/common/ErrorModal';
 
@@ -26,6 +27,7 @@ function App(props) {
         <Header />
         <div className="App" >
           <Switch>
+            <Route path='/' exact render={() => <React.Fragment><Main /></React.Fragment>} />
             <Route path='/signup' exact render={() => <React.Fragment><Signup /></React.Fragment>} />
             <Route path='/login' exact render={() => <React.Fragment><Login /></React.Fragment>} />
             <Route render={() => <h1>Not Found</h1>} />
