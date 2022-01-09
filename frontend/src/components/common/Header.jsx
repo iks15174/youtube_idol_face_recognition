@@ -7,25 +7,25 @@ function Header() {
     return (
         <nav className="mb-5 navbar navbar-expand navbar-light bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand" href={() => false}>VIDOL</a>
+                <a className="navbar-brand" href='#!'>VIDOL</a>
                 <ul className="d-flex flex-row-reverse navbar-nav mb-2">
                     <li className="nav-item px-1">
-                        <a className="nav-link" aria-current="page" href={() => false}>Home</a>
+                        <a className="nav-link" aria-current="page" href='#!'>Home</a>
                     </li>
                     {isLogin
                         ? (
                             <>
                                 <li className="nav-item px-1">
-                                    <a className="nav-link" href={() => false}>Logout</a>
+                                    <a className="nav-link" href='#!'>Logout</a>
                                 </li>
                             </>
                         ) : (
                             <>
                                 <li className="nav-item px-1">
-                                    <a className="nav-link" href={() => false} onClick={() => history.push('/login')}>SignIn</a>
+                                    <a className="nav-link" href='#!' onClick={() => history.push('/login')}>SignIn</a>
                                 </li>
                                 <li className="nav-item px-1">
-                                    <a className="nav-link" href={() => false} onClick={() => history.push('/signup')}>SingUp</a>
+                                    <a className="nav-link" href='#!' onClick={() => history.push('/signup')}>SingUp</a>
                                 </li>
                             </>
                         )

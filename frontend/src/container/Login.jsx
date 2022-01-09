@@ -6,7 +6,7 @@ import { signin } from "../action/auth";
 const Login = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [email, setEmail] = useState("hi");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [formValid, setFormValid] = useState(false);
 
