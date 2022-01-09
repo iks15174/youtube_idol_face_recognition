@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ImageList from "../components/Main/ImageList";
 
 const Main = () => {
     const [youtubeLink, setYoutubeLink] = useState("");
@@ -25,9 +26,7 @@ const Main = () => {
                     (<div className="container video rati">
                         <iframe style={iframeStyle} src={`https://www.youtube.com/embed/${getVideo(youtubeLink)}`} title="youtube-video" allowFullScreen></iframe>
                     </div>) : null}
-                <div className="container face-result">
-                    face result area
-                </div>
+                <ImageList></ImageList>
             </div>
             <div className="container folder">
                 <div className="container new-folder">
