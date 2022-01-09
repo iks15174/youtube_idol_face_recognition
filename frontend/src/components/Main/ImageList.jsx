@@ -1,7 +1,7 @@
 import React from "react";
 import image1 from "../../img/1.jpg";
 
-const ImageList = () => {
+const ImageList = (props) => {
   const imageWidth = "23%";
   return (
     <div className="container face-result mt-2 border bg-light text-center">
