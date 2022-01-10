@@ -52,6 +52,9 @@ const Main = () => {
           />
         </div>
         <FolderList></FolderList>
+        <div className="mt-1" align="right">
+          <button className="btn btn-primary">Save</button>
+        </div>
       </div>
     </div>
   );
