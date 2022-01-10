@@ -9,10 +9,14 @@ import json
 from faceimage.faceDetect.core import FaceDetect
 from faceimage.faceDetect.video.youtubeToVideo import YoutubeToVideo
 
-from faceimage.models import FaceDetectJob
+from faceimage.models import FaceDetectJob, ImageGroup, Image
 
 FILE_TYPE = 10
 LINK_TYPE = 11
+
+
+def get_root_folder(user):
+    return ImageGroup.objects.get(user=user, parent=None)
 
 
 @require_http_methods(["POST"])
@@ -40,3 +44,9 @@ def get_face(request):
         return HttpResponseBadRequest()
     finally:
         youtube_video.delete()
+
+
+@require_http_methods(["GET", "POST"])
+def folders(request):
+    print(get_root_folder(request.user).name)
+    return HttpResponse(status=201)
