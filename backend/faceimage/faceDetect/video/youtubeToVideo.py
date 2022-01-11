@@ -16,15 +16,13 @@ class YoutubeToVideo:
         return cv2.VideoCapture(self.video_path + "/" + FILE_NAME)
 
     def download(self, link):
+        print("----start download youtube video----")
         yt = YouTube(link)
         self.video_path = YoutubeToVideo.get_file_name()
-        print(
-            yt.streams.filter(progressive=True, file_extension="mp4")
-            .order_by("resolution")
-            .desc()
-            .first()
-            .download(output_path=self.video_path, filename=FILE_NAME)
-        )
+        yt.streams.filter(progressive=True, file_extension="mp4").order_by(
+            "resolution"
+        ).desc().first().download(output_path=self.video_path, filename=FILE_NAME)
+        print("----finish download youtube video----")
         return self
 
     def delete(self):

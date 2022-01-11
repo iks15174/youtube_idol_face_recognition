@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 import json
 from faceimage.faceDetect.core import FaceDetect
 from faceimage.faceDetect.video.youtubeToVideo import YoutubeToVideo
-
+from background_task import background
 from faceimage.models import FaceDetectJob, ImageGroup, Image
 
 FILE_TYPE = 10
@@ -27,8 +27,7 @@ def get_face(request):
         face_detect_job = FaceDetectJob.objects.create(user=request.user)
         if src_type == LINK_TYPE:
             link = req_data["link"]
-            youtube_video = YoutubeToVideo()
-            get_face_background(request.user, link, youtube_video, face_detect_job)
+            get_face_background(request.user.id, link, face_detect_job.id)
             return HttpResponse(status=201)
         elif src_type == FILE_TYPE:
             file = request.FILES
@@ -40,10 +39,14 @@ def get_face(request):
         return HttpResponseBadRequest()
 
 
-def get_face_background(user, link, youtube_video, face_detect_job):
+@background(schedule=60)
+def get_face_background(user_id, link, face_detect_job_id):
     try:
+        user = User.objects.get(id=user_id)
+        face_detect_job = FaceDetectJob.objects.get(id=face_detect_job_id)
+        youtube_video = YoutubeToVideo()
+
         youtube_src = youtube_video.download(link).get_video_cap()
-        print(f"youtube src is {youtube_src}")
         FaceDetect(youtube_src, user).run()
         face_detect_job.finished = True
         face_detect_job.save()
