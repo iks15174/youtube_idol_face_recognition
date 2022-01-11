@@ -106,7 +106,7 @@ class FaceDetect:
 
     def run(self):
         try:
-            print("Face detection started")
+            print("----Face detection started----")
             saved_locs = []
             prev_face_locations = []
             while True:
@@ -128,6 +128,10 @@ class FaceDetect:
                         print(
                             f"Face occured over {self.face_occur_threshold} saved in Model"
                         )
+        except Exception as e:
+            print(e)
+            print("----Error occured in Face Detection----")
         finally:
             self.video_src.release()
             cv2.destroyAllWindows()
+            print("----Face detection finished----")
