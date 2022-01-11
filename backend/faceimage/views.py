@@ -2,14 +2,13 @@ from json.decoder import JSONDecodeError
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.http.response import Http404, HttpResponseBadRequest
-from django.contrib.auth import authenticate, get_user_model, login
 from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 import json
 from faceimage.faceDetect.core import FaceDetect
 from faceimage.faceDetect.video.youtubeToVideo import YoutubeToVideo
 from background_task import background
 from faceimage.models import FaceDetectJob, ImageGroup, Image
+from commonUtil import login_required
 
 FILE_TYPE = 10
 LINK_TYPE = 11
@@ -19,6 +18,7 @@ def get_root_folder(user):
     return ImageGroup.objects.get(user=user, parent=None)
 
 
+@login_required
 @require_http_methods(["POST"])
 def get_face(request):
     try:
@@ -54,7 +54,14 @@ def get_face_background(user_id, link, face_detect_job_id):
         youtube_video.delete()
 
 
+@login_required
 @require_http_methods(["GET", "POST"])
 def folders(request):
     print(get_root_folder(request.user).name)
     return HttpResponse(status=201)
+
+
+@login_required
+@require_http_methods(["GET"])
+def jobs(request):
+    FaceDetectJob.objects.filter(user=request.user)
