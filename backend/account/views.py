@@ -31,7 +31,6 @@ def signup(request):
     user = UserModel.objects.create_user(
         email=email, password=password, nickname=nick_name
     )
-    ImageGroup.objects.create(user=user, name=user.nickname)
     return HttpResponse(status=201)
 
 

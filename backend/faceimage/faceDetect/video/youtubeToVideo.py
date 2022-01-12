@@ -8,22 +8,26 @@ FILE_NAME = "video.mp4"
 
 
 class YoutubeToVideo:
-    def __init__(self):
+    def __init__(self, link):
         self.video_path = ""
+        self.link = link
+        self.yt = YouTube(link)
 
     def get_video_cap(self):
         print(self.video_path + "/" + FILE_NAME)
         return cv2.VideoCapture(self.video_path + "/" + FILE_NAME)
 
-    def download(self, link):
+    def download(self):
         print("----start download youtube video----")
-        yt = YouTube(link)
         self.video_path = YoutubeToVideo.get_file_name()
-        yt.streams.filter(progressive=True, file_extension="mp4").order_by(
+        self.yt.streams.filter(progressive=True, file_extension="mp4").order_by(
             "resolution"
         ).desc().first().download(output_path=self.video_path, filename=FILE_NAME)
         print("----finish download youtube video----")
         return self
+
+    def get_video_name(self):
+        self.yt.title
 
     def delete(self):
         shutil.rmtree(self.video_path)
