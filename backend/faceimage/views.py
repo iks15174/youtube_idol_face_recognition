@@ -8,7 +8,7 @@ from faceimage.faceDetect.core import FaceDetect
 from faceimage.faceDetect.video.youtubeToVideo import YoutubeToVideo
 from background_task import background
 from faceimage.models import FaceDetectJob, ImageGroup, Image
-from commonUtil import login_required
+from commonUtil.login_required import login_required
 from datetime import datetime
 
 FILE_TYPE = 10
@@ -49,13 +49,14 @@ def get_face_background(user_id, link, face_detect_job_id):
 
         youtube_src = youtube_video.download().get_video_cap()
         FaceDetect(youtube_src, user).run()
-        face_detect_job.finished = True
-        face_detect_job.save()
-        ImageGroup.objects.create(
+        image_group = ImageGroup.objects.create(
             user=user,
             name=datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             + youtube_video.get_video_name,
         )
+        face_detect_job.finished = True
+        face_detect_job.image_group = image_group
+        face_detect_job.save()
 
     finally:
         youtube_video.delete()

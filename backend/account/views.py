@@ -4,7 +4,6 @@ from django.http.response import HttpResponseBadRequest
 from django.contrib.auth import authenticate, get_user_model, login
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import ensure_csrf_cookie
-from faceimage.models import ImageGroup
 import json
 
 
