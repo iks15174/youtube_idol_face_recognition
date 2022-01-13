@@ -1,8 +1,10 @@
 from json.decoder import JSONDecodeError
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
-from django.http.response import Http404, HttpResponseBadRequest
+from django.http.response import HttpResponseBadRequest
 from django.views.decorators.http import require_http_methods
+from django.shortcuts import get_object_or_404
+from django.forms.models import model_to_dict
 import json
 from faceimage.faceDetect.core import FaceDetect
 from faceimage.faceDetect.video.youtubeToVideo import YoutubeToVideo
@@ -66,11 +68,19 @@ def get_face_background(user_id, link, face_detect_job_id):
 @require_http_methods(["GET", "POST"])
 def folders(request):
     if request.method == "GET":
-        try:
-            req_data = json.loads(request.body.decode())
-            src_type = req_data["type"]
-        except (KeyError, JSONDecodeError):
-            return HttpResponseBadRequest()
+        parent_id = request.GET.get("parent", None)
+        if parent_id:
+            parent = get_object_or_404(ImageGroup, id=parent_id)
+            parent_dic = model_to_dict(parent)
+        else:
+            parent = None
+            parent_dic = ""
+        image_groups = ImageGroup.objects.filter(
+            parent=parent, user=request.user
+        ).values("name", "pa")
+
+        return JsonResponse({"parent": parent_dic, "folders": image_groups}, safe=False)
+
     print(get_root_folder(request.user).name)
     return HttpResponse(status=201)
 
