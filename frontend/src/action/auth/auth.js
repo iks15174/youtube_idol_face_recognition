@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { handleError } from './error';
+import { handleError } from '../error';
 import {
     LOGIN_SUCCESS,
     SIGNUP_SUCCESS,

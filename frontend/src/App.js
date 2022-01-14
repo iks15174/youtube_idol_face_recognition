@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 
-import { token, isLogin } from './action/auth';
+import { token, isLogin } from './action/auth/auth';
 
 
 import Signup from './container/Signup';
