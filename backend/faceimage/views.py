@@ -77,7 +77,7 @@ def folders(request):
             parent_dic = ""
         image_groups = ImageGroup.objects.filter(
             parent=parent, user=request.user
-        ).values("name", "pa")
+        ).values("name", "parent")
 
         return JsonResponse({"parent": parent_dic, "folders": image_groups}, safe=False)
 

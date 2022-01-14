@@ -11,14 +11,17 @@ function Header() {
           VIDOL
         </a>
         <ul className="d-flex flex-row navbar-nav mb-2">
-          <li className="nav-item px-1">
+          <li className="nav-item px-1" onClick={() => history.push("/")}>
             <a className="nav-link" aria-current="page" href="#!">
               Home
             </a>
           </li>
           {isLogin ? (
             <>
-              <li className="nav-item px-1">
+              <li
+                className="nav-item px-1"
+                onClick={() => history.push("/mypage")}
+              >
                 <a className="nav-link" href="#!">
                   MyPage
                 </a>
