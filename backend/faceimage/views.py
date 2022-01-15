@@ -17,10 +17,6 @@ FILE_TYPE = 10
 LINK_TYPE = 11
 
 
-def get_root_folder(user):
-    return ImageGroup.objects.get(user=user, parent=None)
-
-
 @login_required
 @require_http_methods(["POST"])
 def get_face(request):
@@ -111,7 +107,9 @@ def folders(request):
 @login_required
 @require_http_methods(["GET"])
 def jobs(request):
-    my_face_detect_jobs = FaceDetectJob.objects.filter(user=request.user).values(
-        "finished", "created_at", "finished_at"
+    my_face_detect_jobs = list(
+        FaceDetectJob.objects.filter(user=request.user).values(
+            "id", "image_group__id", "finished", "created_at", "finished_at", "link"
+        )
     )
     return JsonResponse(my_face_detect_jobs, safe=False)

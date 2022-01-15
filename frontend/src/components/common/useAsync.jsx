@@ -25,9 +25,9 @@ function reducer(state, action) {
   }
 }
 
-function useAsync(callback, deps = [], skip = false) {
+function useAsync(callback, deps = [], skip = false, initCall = false) {
   const [state, dispatch] = useReducer(reducer, {
-    loading: false,
+    loading: initCall,
     data: null,
     error: false,
   });
@@ -36,7 +36,7 @@ function useAsync(callback, deps = [], skip = false) {
     dispatch({ type: "LOADING" });
     try {
       const data = await callback();
-      dispatch({ type: "SUCCESS", data });
+      dispatch({ type: "SUCCESS", data: data.data });
     } catch (e) {
       dispatch({ type: "ERROR", error: e });
     }

@@ -19,6 +19,7 @@ class FaceDetectJob(models.Model):
     user = models.ForeignKey(
         MyUser, related_name="face_detect_jobs", on_delete=models.CASCADE
     )
+    # name field 추가할 것
     image_group = models.OneToOneField(
         ImageGroup, related_name="detect_jobs", null=True, on_delete=models.CASCADE
     )
