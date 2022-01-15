@@ -81,8 +81,19 @@ def folders(request):
 
         return JsonResponse({"parent": parent_dic, "folders": image_groups}, safe=False)
 
-    print(get_root_folder(request.user).name)
-    return HttpResponse(status=201)
+    # POST 요청이 들어왔을 경우
+    try:
+        req_data = json.loads(request.body.decode())
+        parent_id = req_data["parent"]
+        folder_name = req_data["name"]
+        parent = get_object_or_404(ImageGroup, id=parent_id)
+        new_image_group = ImageGroup.objects.create(
+            name=folder_name, user=request.user, parent=parent
+        )
+        return JsonResponse(model_to_dict(new_image_group), safe=False)
+
+    except (KeyError, JSONDecodeError):
+        return HttpResponseBadRequest()
 
 
 @login_required
