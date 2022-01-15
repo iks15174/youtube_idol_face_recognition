@@ -25,7 +25,7 @@ export const getFaces = (fileType, link) => async (dispatch, getState) => {
 export const getFolders = (email, password) => async (dispatch) => {
     try {
         const res = await axios.get('face-image/folders/')
-        if (res.status === 204) {
+        if (res.status === 200) {
             dispatch({
                 type: GET_FOLDEDRS,
             })
@@ -35,12 +35,11 @@ export const getFolders = (email, password) => async (dispatch) => {
     }
 }
 
-export const makeFolder = (email, nickName, password) => async (dispatch) => {
+export const makeFolder = (parent, name) => async (dispatch) => {
     try {
         const res = await axios.post('face-image/folders/', {
-            email,
-            nickName,
-            password
+            parent,
+            name,
         })
         if (res.status === 201) {
             dispatch({

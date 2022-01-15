@@ -75,11 +75,15 @@ def folders(request):
         else:
             parent = None
             parent_dic = ""
-        image_groups = ImageGroup.objects.filter(
-            parent=parent, user=request.user
-        ).values("name", "parent")
+        image_groups = list(
+            ImageGroup.objects.filter(parent=parent, user=request.user).values(
+                "name", "parent"
+            )
+        )
 
-        return JsonResponse({"parent": parent_dic, "folders": image_groups}, safe=False)
+        return JsonResponse(
+            {"parent": parent_dic, "folders": image_groups}, safe=False, status=200
+        )
 
     # POST 요청이 들어왔을 경우
     try:
