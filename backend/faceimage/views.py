@@ -65,6 +65,14 @@ def get_face_background(user_id, link, face_detect_job_id):
 
 
 @login_required
+@require_http_methods(["GET"])
+def jobs(request):
+    return JsonResponse(
+        list(FaceDetectJob.objects.filter(user=request.user)), safe=False
+    )
+
+
+@login_required
 @require_http_methods(["GET", "POST"])
 def folders(request):
     if request.method == "GET":
