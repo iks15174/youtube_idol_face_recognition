@@ -109,7 +109,13 @@ def folders(request):
 def jobs(request):
     my_face_detect_jobs = list(
         FaceDetectJob.objects.filter(user=request.user).values(
-            "id", "image_group__id", "finished", "created_at", "finished_at", "link"
+            "id",
+            "name",
+            "image_group__id",
+            "finished",
+            "created_at",
+            "finished_at",
+            "link",
         )
     )
     return JsonResponse(my_face_detect_jobs, safe=False)
