@@ -1,5 +1,6 @@
 import axios from "axios";
 import useAsync from "../common/useAsync";
+import Empty from "../common/Empty";
 import { ListGroup, Spinner } from "react-bootstrap";
 
 const getJobs = async () => {
@@ -16,16 +17,17 @@ const MyJob = () => {
         <Spinner animation="border" />
       ) : (
         <>
-          <div className="container col working-jobs">
-            <ListGroup>
+          <div className="container col border working-jobs">
+            {/* <ListGroup>
               {jobs
                 .filter((job) => !job.finished)
                 .map((job) => (
                   <ListGroup.Item>{job.id + job.link}</ListGroup.Item>
                 ))}
-            </ListGroup>
+            </ListGroup> */}
+            <Empty></Empty>
           </div>
-          <div className="container col finished-jobs">
+          <div className="container col border finished-jobs">
             <ListGroup>
               {jobs
                 .filter((job) => job.finished)
